@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/med_card_bg"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/medIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/icon_border_bg"
+        android:src="@drawable/capsuleicon"
+        android:padding="8dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/medInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Instruction"
+        android:layout_toEndOf="@id/medIcon"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/medName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Medicine Name"
+        android:textStyle="bold"
+        android:layout_below="@id/medInstruction"
+        android:layout_toEndOf="@id/medIcon"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/black"/>
+
+    <LinearLayout
+        android:id="@+id/timeLayout"
+        android:layout_below="@id/medName"
+        android:layout_toEndOf="@id/medIcon"
+        android:layout_marginStart="10dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/timeicon"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/medTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:00 AM"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"/>
+    </LinearLayout>
+</RelativeLayout>

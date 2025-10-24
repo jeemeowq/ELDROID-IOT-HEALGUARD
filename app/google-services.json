@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "960420842121",
+    "firebase_url": "https://iot-healguard-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "iot-healguard",
+    "storage_bucket": "iot-healguard.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960420842121:android:af5565941d93ab51e8d458",
+        "android_client_info": {
+          "package_name": "com.example.healguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEnnp5zJ91eWsymKb8YgnFIpx7CCt2B84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

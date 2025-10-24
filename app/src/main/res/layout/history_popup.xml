@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#AEE6FA"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/historyText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:text="History action here" />
+
+    <TextView
+        android:id="@+id/historyDate_Time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:text="Date and Time here"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>
