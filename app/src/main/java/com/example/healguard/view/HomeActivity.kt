@@ -40,6 +40,8 @@ class HomeActivity : Activity(), IHomeView {
     private val currentUser = auth.currentUser
     private lateinit var prefsManager: PrefsManager
     private lateinit var alarmManager: AlarmManager
+    private var notificationsDialog: AlertDialog? = null
+    private var historyDialog: AlertDialog? = null
 
     companion object {
         private const val REQUEST_CODE_PROFILE = 1001
@@ -79,6 +81,12 @@ class HomeActivity : Activity(), IHomeView {
     override fun onResume() {
         super.onResume()
         updateGreetingText()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        notificationsDialog?.dismiss()
+        historyDialog?.dismiss()
     }
 
     private fun setupRealTimeDate() {
@@ -396,6 +404,7 @@ class HomeActivity : Activity(), IHomeView {
             showHistoryDialog()
         }
     }
+
     private fun formatDateTime(timestamp: Long): String {
         val phTimeZone = TimeZone.getTimeZone("Asia/Manila")
         val dateFormat = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).apply {
@@ -411,9 +420,18 @@ class HomeActivity : Activity(), IHomeView {
 
         return "$formattedDate & $formattedTime"
     }
+
     private fun showNotificationsDialog() {
         try {
-            val dialogView = LinearLayout(this).apply {
+            val scrollView = ScrollView(this).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                isVerticalScrollBarEnabled = true
+            }
+
+            val mainContainer = LinearLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -435,7 +453,7 @@ class HomeActivity : Activity(), IHomeView {
                     bottomMargin = 16
                 }
             }
-            dialogView.addView(title)
+            mainContainer.addView(title)
 
             val notificationsContainer = LinearLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
@@ -444,16 +462,26 @@ class HomeActivity : Activity(), IHomeView {
                 )
                 orientation = LinearLayout.VERTICAL
             }
-            dialogView.addView(notificationsContainer)
+            mainContainer.addView(notificationsContainer)
 
-            loadNotificationsFromFirebase(notificationsContainer)
+            scrollView.addView(mainContainer)
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(dialogView)
+            notificationsDialog = AlertDialog.Builder(this)
+                .setView(scrollView)
                 .setCancelable(true)
                 .create()
 
-            dialog.show()
+            notificationsDialog?.setCanceledOnTouchOutside(true)
+
+            loadNotificationsFromFirebase(notificationsContainer)
+
+            notificationsDialog?.show()
+
+            notificationsDialog?.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                resources.displayMetrics.heightPixels * 2 / 3
+            )
+
         } catch (e: Exception) {
             Toast.makeText(this, "Error showing notifications", Toast.LENGTH_SHORT).show()
             e.printStackTrace()
@@ -518,7 +546,15 @@ class HomeActivity : Activity(), IHomeView {
 
     private fun showHistoryDialog() {
         try {
-            val dialogView = LinearLayout(this).apply {
+            val scrollView = ScrollView(this).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                isVerticalScrollBarEnabled = true
+            }
+
+            val mainContainer = LinearLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -540,7 +576,7 @@ class HomeActivity : Activity(), IHomeView {
                     bottomMargin = 16
                 }
             }
-            dialogView.addView(title)
+            mainContainer.addView(title)
 
             val historyContainer = LinearLayout(this).apply {
                 layoutParams = LinearLayout.LayoutParams(
@@ -549,16 +585,26 @@ class HomeActivity : Activity(), IHomeView {
                 )
                 orientation = LinearLayout.VERTICAL
             }
-            dialogView.addView(historyContainer)
+            mainContainer.addView(historyContainer)
 
-            loadHistoryFromFirebase(historyContainer)
+            scrollView.addView(mainContainer)
 
-            val dialog = AlertDialog.Builder(this)
-                .setView(dialogView)
+            historyDialog = AlertDialog.Builder(this)
+                .setView(scrollView)
                 .setCancelable(true)
                 .create()
 
-            dialog.show()
+            historyDialog?.setCanceledOnTouchOutside(true)
+
+            loadHistoryFromFirebase(historyContainer)
+
+            historyDialog?.show()
+
+            historyDialog?.window?.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                resources.displayMetrics.heightPixels * 2 / 3
+            )
+
         } catch (e: Exception) {
             Toast.makeText(this, "Error showing history", Toast.LENGTH_SHORT).show()
             e.printStackTrace()

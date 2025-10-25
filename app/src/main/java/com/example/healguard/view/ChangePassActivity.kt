@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.healguard.R
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 
 class ChangePassActivity : Activity() {
@@ -52,7 +53,7 @@ class ChangePassActivity : Activity() {
 
     private fun setupClickListeners() {
         backArrow.setOnClickListener {
-            navigateToEditProfile()
+            navigateToProfile()
         }
 
         saveChangesButton.setOnClickListener {
@@ -113,46 +114,108 @@ class ChangePassActivity : Activity() {
         val newPassword = newPasswordInput.text.toString().trim()
         val confirmPassword = confirmPasswordInput.text.toString().trim()
 
+        saveChangesButton.isEnabled = false
+
         if (oldPassword.isEmpty()) {
             oldPasswordInput.error = "Please enter old password"
+            saveChangesButton.isEnabled = true
             return
         }
 
         if (newPassword.isEmpty()) {
             newPasswordInput.error = "Please enter new password"
+            saveChangesButton.isEnabled = true
             return
         }
 
         if (newPassword.length < 6) {
             newPasswordInput.error = "Password must be at least 6 characters"
+            saveChangesButton.isEnabled = true
             return
         }
 
         if (confirmPassword.isEmpty()) {
             confirmPasswordInput.error = "Please confirm new password"
+            saveChangesButton.isEnabled = true
             return
         }
 
         if (newPassword != confirmPassword) {
             confirmPasswordInput.error = "Passwords do not match"
+            saveChangesButton.isEnabled = true
             return
         }
 
         val currentUser = auth.currentUser
-        currentUser?.let { user ->
-            user.updatePassword(newPassword)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        navigateToSuccessPassword()
-                    } else {
-                        Toast.makeText(this, "Failed to change password: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
+
+        if (currentUser == null) {
+            Toast.makeText(
+                this,
+                "User not authenticated. Please sign in again.",
+                Toast.LENGTH_SHORT
+            ).show()
+            saveChangesButton.isEnabled = true
+            return
         }
+
+        if (currentUser.email.isNullOrEmpty()) {
+            Toast.makeText(
+                this,
+                "Email not available. Please sign in again.",
+                Toast.LENGTH_SHORT
+            ).show()
+            saveChangesButton.isEnabled = true
+            return
+        }
+
+        val hasEmailPassword = currentUser.providerData.any { it.providerId == "password" }
+        if (!hasEmailPassword) {
+            Toast.makeText(
+                this,
+                "Password change not available for social login accounts.",
+                Toast.LENGTH_SHORT
+            ).show()
+            saveChangesButton.isEnabled = true
+            return
+        }
+
+        val credential = EmailAuthProvider.getCredential(currentUser.email!!, oldPassword)
+
+        currentUser.reauthenticate(credential)
+            .addOnCompleteListener { reauthTask ->
+                if (reauthTask.isSuccessful) {
+                    currentUser.updatePassword(newPassword)
+                        .addOnCompleteListener { updateTask ->
+                            saveChangesButton.isEnabled = true
+
+                            if (updateTask.isSuccessful) {
+                                Toast.makeText(
+                                    this,
+                                    "Password changed successfully!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                navigateToSuccessPassword()
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Failed to change password: ${updateTask.exception?.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                } else {
+                    saveChangesButton.isEnabled = true
+                    Toast.makeText(
+                        this,
+                        "Authentication failed: Incorrect old password",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
-    private fun navigateToEditProfile() {
-        val intent = Intent(this, EditProfileActivity::class.java)
+    private fun navigateToProfile() {
+        val intent = Intent(this, ProfileActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -164,6 +227,6 @@ class ChangePassActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        navigateToEditProfile()
+        navigateToProfile()
     }
 }
