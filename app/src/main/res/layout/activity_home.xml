@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/profileIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/profileicon"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:id="@+id/greetingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi, Anjelyn!"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_toEndOf="@id/profileIcon"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/black"/>
+
+        <ImageView
+            android:id="@+id/notificationIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/notificationicon"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"/>
+    </RelativeLayout>
+
+    <!-- Hardware Status Section - ADD THIS -->
+    <LinearLayout
+        android:id="@+id/hardwareStatusLayout"
+        android:layout_below="@id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#F5F5F5"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/hardwareStatusIndicator"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_circle"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/hardwareStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hardware: Connecting..."
+            android:textSize="14sp"
+            android:textColor="#757575" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/datePickerLayout"
+        android:layout_below="@id/hardwareStatusLayout"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/med_card_bg"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/todayDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today, 26 September"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"/>
+
+        <LinearLayout
+            android:id="@+id/datePickerClickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/todayDateText"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:text="26\nFri"
+                android:gravity="center"
+                android:background="@drawable/date_today_bg"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/nextDate1"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:text="27\nSat"
+                android:gravity="center"
+                android:background="@drawable/date_bg"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/nextDate2"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:text="28\nSun"
+                android:gravity="center"
+                android:background="@drawable/date_bg"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/nextDate3"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:text="29\nMon"
+                android:gravity="center"
+                android:background="@drawable/date_bg"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="8dp"/>
+
+            <TextView
+                android:id="@+id/nextDate4"
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:text="30\nTue"
+                android:gravity="center"
+                android:background="@drawable/date_bg"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/medicinesScroll"
+        android:layout_below="@id/datePickerLayout"
+        android:layout_above="@id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/medicinesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"/>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:background="@drawable/bottom_nav_bg"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/homeIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/homeicon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/circle_bg"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/plusIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/plusicon"
+                    android:layout_gravity="center"
+                    android:scaleType="centerInside"/>
+            </FrameLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/historyIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/historyicon"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
